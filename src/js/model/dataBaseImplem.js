@@ -19,7 +19,7 @@ export default class dataBaseImplem {
   getUserProfile(user_id) {
     return new Promise((resolve, reject) => {
       try {
-          var sql=`select UserProfile.user,UserProfile.display_name,UserProfile.email `+
+          var sql=`select UserProfile.user,UserProfile.display_name,UserProfile.email,User.type `+
             `from UserProfile inner join User ON User.id = UserProfile.user `+
             `where UserProfile.user=${user_id}`;
           this.con.query(sql,(err, result)=>{

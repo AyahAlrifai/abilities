@@ -38,7 +38,7 @@ var dataBaseImplem = function () {
 
       return new Promise(function (resolve, reject) {
         try {
-          var sql = "select UserProfile.user,UserProfile.display_name,UserProfile.email " + "from UserProfile inner join User ON User.id = UserProfile.user " + ("where UserProfile.user=" + user_id);
+          var sql = "select UserProfile.user,UserProfile.display_name,UserProfile.email,User.type " + "from UserProfile inner join User ON User.id = UserProfile.user " + ("where UserProfile.user=" + user_id);
           _this.con.query(sql, function (err, result) {
             if (err) {
               throw err;
