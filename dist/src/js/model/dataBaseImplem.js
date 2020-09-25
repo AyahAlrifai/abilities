@@ -25,7 +25,6 @@ var dataBaseImplem = function () {
       database: database,
       multipleStatements: true
     });
-
     this.con.connect(function (err) {
       if (err) throw err;
       console.log("Connected!");
@@ -34,12 +33,13 @@ var dataBaseImplem = function () {
 
   _createClass(dataBaseImplem, [{
     key: "getUserProfile",
-    value: async function getUserProfile(user_id) {
+    value: function getUserProfile(user_id) {
       var _this = this;
 
-      return new Promise(async function (resolve, reject) {
+      return new Promise(function (resolve, reject) {
         try {
-          _this.con.query("select UserProfile.user,UserProfile.display_name,UserProfile.email " + "from UserProfile inner join User ON User.id = UserProfile.user " + ("where UserProfile.user=" + user_id), function (err, result) {
+          var sql = "select UserProfile.user,UserProfile.display_name,UserProfile.email " + "from UserProfile inner join User ON User.id = UserProfile.user " + ("where UserProfile.user=" + user_id);
+          _this.con.query(sql, function (err, result) {
             if (err) {
               throw err;
             } else if (result.length == 1) {
@@ -55,15 +55,17 @@ var dataBaseImplem = function () {
     }
   }, {
     key: "createUser",
-    value: async function createUser(info) {
+    value: function createUser(info) {
       var _this2 = this;
 
-      return new Promise(async function (resolve, reject) {
+      return new Promise(function (resolve, reject) {
         try {
-          _this2.con.query("INSERT INTO User VALUES (" + info.id + ",'" + info.type + "');", async function (err, result) {
+          var sql = "INSERT INTO User VALUES (" + info.id + ",'" + info.type + "');";
+          _this2.con.query(sql, function (err, result) {
             if (err) throw err;
             if (result.affectedRows > 0) {
-              _this2.con.query("INSERT INTO UserProfile VALUES ('" + info.display_name + "','" + info.email + "'," + info.id + ");", function (err, result) {
+              sql = "INSERT INTO UserProfile VALUES ('" + info.display_name + "','" + info.email + "'," + info.id + ");";
+              _this2.con.query(sql, function (err, result) {
                 if (err) throw err;
                 resolve({ "status": "200OK", "message": "user added to database" });
               });
@@ -78,15 +80,17 @@ var dataBaseImplem = function () {
     }
   }, {
     key: "deleteUser",
-    value: async function deleteUser(user_id) {
+    value: function deleteUser(user_id) {
       var _this3 = this;
 
-      return new Promise(async function (resolve, reject) {
+      return new Promise(function (resolve, reject) {
         try {
-          _this3.con.query("delete from UserProfile where UserProfile.user=" + user_id + "\n              and UserProfile.email is null;", function (err, result) {
+          var sql = "delete from UserProfile where UserProfile.user=" + user_id + " and UserProfile.email is null;";
+          _this3.con.query(sql, function (err, result) {
             if (err) throw err;
             if (result.affectedRows > 0) {
-              _this3.con.query("delete from User where User.id=" + user_id, function (err, result) {
+              sql = "delete from User where User.id=" + user_id;
+              _this3.con.query(sql, function (err, result) {
                 if (err) throw err;
                 resolve({ "status": "200OK", "message": "user deleted from database" });
               });
@@ -101,12 +105,13 @@ var dataBaseImplem = function () {
     }
   }, {
     key: "getUsersByType",
-    value: async function getUsersByType(type) {
+    value: function getUsersByType(type) {
       var _this4 = this;
 
-      return new Promise(async function (resolve, reject) {
+      return new Promise(function (resolve, reject) {
         try {
-          await _this4.con.query("select UserProfile.user,UserProfile.display_name,UserProfile.email " + "from UserProfile inner join User ON User.id = UserProfile.user " + ("where User.type=" + type), function (err, result) {
+          var sql = "select UserProfile.user,UserProfile.display_name,UserProfile.email " + "from UserProfile inner join User ON User.id = UserProfile.user " + ("where User.type=" + type);
+          _this4.con.query(sql, function (err, result) {
             if (err) throw err;
             if (result.length > 0) {
               resolve(result);
@@ -121,7 +126,7 @@ var dataBaseImplem = function () {
     }
   }, {
     key: "updateListOfUsers",
-    value: async function updateListOfUsers(users) {
+    value: function updateListOfUsers(users) {
       var _this5 = this;
 
       var sql = "";

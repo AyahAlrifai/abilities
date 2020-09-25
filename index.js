@@ -4,8 +4,7 @@ import * as DatabaseConfig from "./src/js/databaseConfig/config";
 
 const dataBase=new dataBaseImplem(DatabaseConfig.user,DatabaseConfig.password,DatabaseConfig.host,DatabaseConfig.database);
 const app = express()
-const port = 8080
-
+const port = 8081
 
 app.use(express.json())
 

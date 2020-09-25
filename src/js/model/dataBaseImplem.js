@@ -10,20 +10,19 @@ export default class dataBaseImplem {
       database: database,
       multipleStatements:true
     });
-
     this.con.connect((err)=>{
       if (err) throw err;
       console.log("Connected!");
     });
   }
 
-  async getUserProfile(user_id) {
-    return new Promise(async (resolve, reject) => {
+  getUserProfile(user_id) {
+    return new Promise((resolve, reject) => {
       try {
-          this.con.query(`select UserProfile.user,UserProfile.display_name,UserProfile.email `+
+          var sql=`select UserProfile.user,UserProfile.display_name,UserProfile.email `+
             `from UserProfile inner join User ON User.id = UserProfile.user `+
-            `where UserProfile.user=${user_id}`
-              ,(err, result)=>{
+            `where UserProfile.user=${user_id}`;
+          this.con.query(sql,(err, result)=>{
             if (err){
               throw err;
             } else if(result.length==1) {
@@ -38,15 +37,15 @@ export default class dataBaseImplem {
     });
 }
 
-  async createUser(info) {
-    return new Promise(async (resolve, reject) => {
+  createUser(info) {
+    return new Promise((resolve, reject) => {
       try {
-        this.con.query(`INSERT INTO User VALUES (${info.id},'${info.type}');`
-            ,async (err, result)=> {
+        var sql=`INSERT INTO User VALUES (${info.id},'${info.type}');`;
+        this.con.query(sql,(err, result)=> {
           if (err) throw err;
           if(result.affectedRows>0) {
-            this.con.query(`INSERT INTO UserProfile VALUES ('${info.display_name}','${info.email}',${info.id});`
-                ,(err, result)=> {
+            sql=`INSERT INTO UserProfile VALUES ('${info.display_name}','${info.email}',${info.id});`;
+            this.con.query(sql,(err, result)=> {
               if (err) throw err;
               resolve({"status":"200OK","message":"user added to database"});
             });
@@ -60,16 +59,15 @@ export default class dataBaseImplem {
     });
   }
 
-  async deleteUser(user_id) {
-    return new Promise(async (resolve, reject) => {
+  deleteUser(user_id) {
+    return new Promise((resolve, reject) => {
       try {
-        this.con.query(`delete from UserProfile where UserProfile.user=${user_id}
-              and UserProfile.email is null;`
-            ,(err, result)=> {
+        var sql=`delete from UserProfile where UserProfile.user=${user_id} and UserProfile.email is null;`;
+        this.con.query(sql,(err, result)=> {
           if (err) throw err;
           if(result.affectedRows>0) {
-            this.con.query(`delete from User where User.id=${user_id}`
-                ,(err, result)=> {
+            sql=`delete from User where User.id=${user_id}`;
+            this.con.query(sql,(err, result)=> {
               if (err) throw err;
               resolve({"status":"200OK","message":"user deleted from database"});
             });
@@ -83,13 +81,13 @@ export default class dataBaseImplem {
     });
   }
 
-  async getUsersByType(type) {
-    return new Promise(async (resolve, reject) => {
+  getUsersByType(type) {
+    return new Promise((resolve, reject) => {
       try {
-        await this.con.query(`select UserProfile.user,UserProfile.display_name,UserProfile.email `+
+        var sql=`select UserProfile.user,UserProfile.display_name,UserProfile.email `+
           `from UserProfile inner join User ON User.id = UserProfile.user `+
-          `where User.type=${type}`
-            ,(err, result)=>{
+          `where User.type=${type}`;
+        this.con.query(sql,(err, result)=>{
           if (err) throw err;
           if(result.length>0) {
             resolve(result);
@@ -103,7 +101,7 @@ export default class dataBaseImplem {
     });
   }
 
-  async updateListOfUsers(users) {
+  updateListOfUsers(users) {
     var sql="";
     for(var i=0;i<users.length;i++) {
       sql+=`update UserProfile set display_name="${users[i].display_name}",email="${users[i].email}" where user=${users[i].id};`
@@ -119,5 +117,5 @@ export default class dataBaseImplem {
       }
     });
   }
-  
+
 }

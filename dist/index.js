@@ -18,7 +18,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var dataBase = new _dataBaseImplem2.default(DatabaseConfig.user, DatabaseConfig.password, DatabaseConfig.host, DatabaseConfig.database);
 var app = (0, _express2.default)();
-var port = 8080;
+var port = 8081;
 
 app.use(_express2.default.json());
 
