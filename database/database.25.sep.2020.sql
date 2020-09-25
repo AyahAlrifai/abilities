@@ -35,6 +35,7 @@ CREATE TABLE `User` (
 
 LOCK TABLES `User` WRITE;
 /*!40000 ALTER TABLE `User` DISABLE KEYS */;
+INSERT INTO `User` VALUES ('1','ADMIN'),('2','NORMAL'),('3','ADMIN'),('4','NORMAL'),('5','NORMAL'),('6','NORMAL'),('7','ADMIN'),('8','NORMAL');
 /*!40000 ALTER TABLE `User` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -51,7 +52,7 @@ CREATE TABLE `UserProfile` (
   `user` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   UNIQUE KEY `email` (`email`),
   KEY `user` (`user`),
-  CONSTRAINT `UserProfile_ibfk_1` FOREIGN KEY (`user`) REFERENCES `User` (`id`)
+  CONSTRAINT `UserProfile_ibfk_1` FOREIGN KEY (`user`) REFERENCES `User` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -61,6 +62,7 @@ CREATE TABLE `UserProfile` (
 
 LOCK TABLES `UserProfile` WRITE;
 /*!40000 ALTER TABLE `UserProfile` DISABLE KEYS */;
+INSERT INTO `UserProfile` VALUES ('Ayah Alrifai','akalrifai15@gmail.com','1'),('x1','x1@gmail.com','2'),('x3','x3@gmail.com','3'),('x4','x4@gmail.com','4'),('x5','x5@gmail.com','5'),('x6',NULL,'6'),('x7','x7@gmail.com','7'),('x8','x8@gmail.com','8');
 /*!40000 ALTER TABLE `UserProfile` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -73,4 +75,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-09-25  4:07:45
+-- Dump completed on 2020-09-25  5:15:55
