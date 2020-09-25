@@ -18,21 +18,18 @@ var _mysql2 = _interopRequireDefault(_mysql);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_http2.default.createServer(function (req, res) {
-  var con = _mysql2.default.createConnection({
-    host: "localhost",
-    user: "abilitiez",
-    password: "123412345",
-    database: "Abilitiez"
-  });
+var con = _mysql2.default.createConnection({
+  host: "localhost",
+  user: "abilitiez",
+  password: "123412345",
+  database: "Abilitiez"
+});
 
-  con.connect(function (err) {
+con.connect(function (err) {
+  if (err) throw err;
+  console.log("Connected!");
+  con.query("Create table User(id Varchar(255) Primary key NOT NULL,type ENUM('NORMAL', 'ADMIN') NOT NULL);", function (err, result) {
     if (err) throw err;
-    console.log("Connected!");
-    con.query("create table User(id varchar2,type ENUM('NORMAL,ADMIN'))", function (err, result) {
-      if (err) throw err;
-      console.log("table created");
-    });
+    console.log("User Table created");
   });
-  res.end();
-}).listen(8081);
+});
