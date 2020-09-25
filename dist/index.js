@@ -28,7 +28,7 @@ var con = _mysql2.default.createConnection({
 con.connect(function (err) {
   if (err) throw err;
   console.log("Connected!");
-  con.query("Create table User(id Varchar(255) Primary key NOT NULL,type ENUM('NORMAL', 'ADMIN') NOT NULL);", function (err, result) {
+  con.query("Create table UserProfile(" + "display_name varchar(100) NOT NULL," + "email varchar(100) unique," + "user Varchar(255) not null," + "FOREIGN KEY (user) REFERENCES User(id));", function (err, result) {
     if (err) throw err;
     console.log("User Table created");
   });
